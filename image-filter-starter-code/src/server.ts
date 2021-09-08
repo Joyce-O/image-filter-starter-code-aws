@@ -1,7 +1,6 @@
-import express from 'express';
-const http = require('http');
+import express, {Request, Response} from 'express';
+import fs, {ReadStream } from 'fs';
 import bodyParser from 'body-parser';
-const imageType = require('image-type');
 import { filterImageFromURL, deleteLocalFiles, getAllFilePaths } from './util/util';
 
 (async () => {
@@ -28,21 +27,25 @@ import { filterImageFromURL, deleteLocalFiles, getAllFilePaths } from './util/ut
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
-  app.get("/filteredimage", async (req, res) => {
+  app.get("/filteredimage", async (req: Request, res: Response) => {
     try {
-      let imageUrl = req.query.image_url;
+      let imageUrl: string = req.query.image_url;
       if (!imageUrl) {
         return res.send("This endpoint requires image_url as a query");
       } else {
         imageUrl = imageUrl.trim();
-        const resultFile = await filterImageFromURL(imageUrl);
+        const resultFile: string = await filterImageFromURL(imageUrl);
         if (typeof resultFile === 'object') {
-          console.log(resultFile);
           return res.status(422).send({ mesg: "Make sure the provided image_url is a valid image file", error: resultFile });
         }
-        const fileList = await getAllFilePaths();
-        await deleteLocalFiles(fileList)
-        return res.send(resultFile);
+
+        const file: ReadStream = await fs.createReadStream(resultFile);
+        file.on("end", async (data) => {
+          const fileList = await getAllFilePaths();
+          await deleteLocalFiles(fileList);
+        });
+
+        return file.pipe(res);
       }
     } catch (error) {
       console.log(error);

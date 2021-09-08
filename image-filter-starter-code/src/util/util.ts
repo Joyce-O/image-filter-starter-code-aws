@@ -39,7 +39,7 @@ export async function filterImageFromURL(inputURL: string) {
 }
 // getAllFilePaths 
 //Helper function to get list of files from the newly created folder 
-export async function getAllFilePaths() {
+export async function getAllFilePaths(): Promise<string[]> {
     return readdirSync(directory);
 }
 // deleteLocalFiles

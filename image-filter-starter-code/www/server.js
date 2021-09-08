@@ -12,9 +12,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const http = require('http');
+const fs_1 = __importDefault(require("fs"));
 const body_parser_1 = __importDefault(require("body-parser"));
-const imageType = require('image-type');
 const util_1 = require("./util/util");
 (() => __awaiter(this, void 0, void 0, function* () {
     // Init the Express application
@@ -45,12 +44,14 @@ const util_1 = require("./util/util");
                 imageUrl = imageUrl.trim();
                 const resultFile = yield util_1.filterImageFromURL(imageUrl);
                 if (typeof resultFile === 'object') {
-                    console.log(resultFile);
                     return res.status(422).send({ mesg: "Make sure the provided image_url is a valid image file", error: resultFile });
                 }
-                const fileList = yield util_1.getAllFilePaths();
-                yield util_1.deleteLocalFiles(fileList);
-                return res.send(resultFile);
+                const file = yield fs_1.default.createReadStream(resultFile);
+                file.on("end", (data) => __awaiter(this, void 0, void 0, function* () {
+                    const fileList = yield util_1.getAllFilePaths();
+                    yield util_1.deleteLocalFiles(fileList);
+                }));
+                return file.pipe(res);
             }
         }
         catch (error) {
