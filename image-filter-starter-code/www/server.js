@@ -45,15 +45,15 @@ const util_1 = require("./util/util");
                 imageUrl = imageUrl.trim();
                 const resultFile = yield util_1.filterImageFromURL(imageUrl);
                 if (typeof resultFile === 'object') {
-                    return res.status(400).send({ mesg: "Make sure the provided image_url is a valid image file", error: resultFile });
+                    return res.status(422).send({ mesg: "Make sure the provided image_url is a valid image file", error: resultFile });
                 }
                 const fileList = yield util_1.getAllFilePaths();
-                util_1.deleteLocalFiles(fileList);
+                yield util_1.deleteLocalFiles(fileList);
                 return res.send(resultFile);
             }
         }
         catch (error) {
-            return res.status(400).send({ mesg: "Make sure the provided image_url is a valid image file", error });
+            return res.status(422).send({ mesg: "Make sure the provided image_url is a valid image file", error });
         }
     }));
     //! END @TODO1

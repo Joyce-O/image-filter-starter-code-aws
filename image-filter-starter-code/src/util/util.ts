@@ -19,7 +19,8 @@ export async function filterImageFromURL(inputURL: string) {
         maxMemoryUsageInMB: 6144,
         maxResolutionInMP: 600
     })
-    const res = await Jimp.read(inputURL)
+
+    return Jimp.read(inputURL)
         .then(image => {
             image
                 .resize(256, 256) // resize
@@ -32,7 +33,6 @@ export async function filterImageFromURL(inputURL: string) {
         .catch(err => {
             return err;
         });
-    return res;
 }
 // getAllFilePaths 
 //Helper function to get list of files from the newly created folder 
