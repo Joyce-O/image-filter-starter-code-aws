@@ -32,7 +32,8 @@ const directory = path_1.default.join(__dirname, '/tmp/');
 function filterImageFromURL(inputURL) {
     return __awaiter(this, void 0, void 0, function* () {
         const outpath = '/tmp/filtered' + Math.floor(Math.random() * 2000) + '.jpg';
-        return Jimp.read(inputURL)
+        console.log(`aa`, typeof inputURL);
+        const res = yield Jimp.read(inputURL)
             .then(image => {
             image
                 .resize(256, 256) // resize
@@ -45,6 +46,7 @@ function filterImageFromURL(inputURL) {
             .catch(err => {
             return err;
         });
+        return res;
     });
 }
 exports.filterImageFromURL = filterImageFromURL;
