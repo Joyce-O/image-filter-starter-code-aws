@@ -47,7 +47,7 @@ const util_1 = require("./util/util");
                     return res.status(422).send({ mesg: "Make sure the provided image_url is a valid image file", error: resultFile });
                 }
                 const file = yield fs_1.default.createReadStream(resultFile);
-                file.on("end", (data) => __awaiter(this, void 0, void 0, function* () {
+                file.on("end", () => __awaiter(this, void 0, void 0, function* () {
                     const fileList = yield util_1.getAllFilePaths();
                     yield util_1.deleteLocalFiles(fileList);
                 }));

@@ -40,7 +40,7 @@ import { filterImageFromURL, deleteLocalFiles, getAllFilePaths } from './util/ut
         }
 
         const file: ReadStream = await fs.createReadStream(resultFile);
-        file.on("end", async (data) => {
+        file.on("end", async () => {
           const fileList = await getAllFilePaths();
           await deleteLocalFiles(fileList);
         });
