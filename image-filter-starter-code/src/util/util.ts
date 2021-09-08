@@ -12,7 +12,14 @@ const directory = path.join(__dirname, '/tmp/');
 //    an absolute path to a filtered image locally saved file
 export async function filterImageFromURL(inputURL: string) {
     const outpath = '/tmp/filtered' + Math.floor(Math.random() * 2000) + '.jpg';
-    return Jimp.read(inputURL)
+
+    // add support for very large image files
+    const JPEG = require('jpeg-js')
+    Jimp.decoders['image/jpeg'] = (data) => JPEG.decode(data, {
+        maxMemoryUsageInMB: 6144,
+        maxResolutionInMP: 600
+    })
+    const res = await Jimp.read(inputURL)
         .then(image => {
             image
                 .resize(256, 256) // resize
@@ -25,6 +32,7 @@ export async function filterImageFromURL(inputURL: string) {
         .catch(err => {
             return err;
         });
+    return res;
 }
 // getAllFilePaths 
 //Helper function to get list of files from the newly created folder 
@@ -38,6 +46,6 @@ export async function getAllFilePaths() {
 //    files: Array<string> an array of absolute paths to files
 export async function deleteLocalFiles(files: Array<string>) {
     for (let file of files) {
-        fs.unlinkSync(directory+file);
+        fs.unlinkSync(directory + file);
     }
 }

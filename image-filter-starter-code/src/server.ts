@@ -40,7 +40,7 @@ import { filterImageFromURL, deleteLocalFiles, getAllFilePaths } from './util/ut
           return res.status(400).send({ mesg: "Make sure the provided image_url is a valid image file", error: resultFile });
         }
         const fileList = await getAllFilePaths();
-        deleteLocalFiles(fileList)
+        await deleteLocalFiles(fileList)
         return res.send(resultFile);
       }
     } catch (error) {
