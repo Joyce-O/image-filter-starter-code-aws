@@ -45,6 +45,7 @@ const util_1 = require("./util/util");
                 imageUrl = imageUrl.trim();
                 const resultFile = yield util_1.filterImageFromURL(imageUrl);
                 if (typeof resultFile === 'object') {
+                    console.log(resultFile);
                     return res.status(422).send({ mesg: "Make sure the provided image_url is a valid image file", error: resultFile });
                 }
                 const fileList = yield util_1.getAllFilePaths();
@@ -53,6 +54,7 @@ const util_1 = require("./util/util");
             }
         }
         catch (error) {
+            console.log(error);
             return res.status(422).send({ mesg: "Make sure the provided image_url is a valid image file", error });
         }
     }));
