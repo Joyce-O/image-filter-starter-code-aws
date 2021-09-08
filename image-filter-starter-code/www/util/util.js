@@ -21,6 +21,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importStar(require("fs"));
 const path_1 = __importDefault(require("path"));
 const Jimp = require("jimp");
+const JPEG = require('jpeg-js');
 const directory = path_1.default.join(__dirname, '/tmp/');
 // filterImageFromURL
 // helper function to download, filter, and save the filtered image locally
@@ -33,9 +34,8 @@ function filterImageFromURL(inputURL) {
     return __awaiter(this, void 0, void 0, function* () {
         const outpath = '/tmp/filtered' + Math.floor(Math.random() * 2000) + '.jpg';
         // add support for very large image files
-        const JPEG = require('jpeg-js');
         Jimp.decoders['image/jpeg'] = (data) => JPEG.decode(data, {
-            maxMemoryUsageInMB: 6144,
+            maxMemoryUsageInMB: 7000,
             maxResolutionInMP: 600
         });
         return Jimp.read(inputURL)
