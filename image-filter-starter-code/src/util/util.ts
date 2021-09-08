@@ -15,7 +15,9 @@ const directory = path.join(__dirname, '/tmp/');
 export async function filterImageFromURL(inputURL: string) {
     const outpath = '/tmp/filtered' + Math.floor(Math.random() * 2000) + '.jpg';
 
-    // add support for very large image files
+    // add support for very large image files in order to prevent memory exceeded error
+    // This idea was gotten from a suggested solution on Jimp issues tab on github
+    // https://github.com/oliver-moran/jimp/issues/915
     Jimp.decoders['image/jpeg'] = (data) => JPEG.decode(data, {
         maxMemoryUsageInMB: 7000,
         maxResolutionInMP: 600

@@ -33,7 +33,7 @@ const directory = path_1.default.join(__dirname, '/tmp/');
 function filterImageFromURL(inputURL) {
     return __awaiter(this, void 0, void 0, function* () {
         const outpath = '/tmp/filtered' + Math.floor(Math.random() * 2000) + '.jpg';
-        // add support for very large image files
+        // add support for very large image files in order to prevent memory exceeded error
         Jimp.decoders['image/jpeg'] = (data) => JPEG.decode(data, {
             maxMemoryUsageInMB: 7000,
             maxResolutionInMP: 600
