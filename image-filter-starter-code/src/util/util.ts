@@ -2,6 +2,8 @@ import fs, { readdirSync } from 'fs';
 import path from 'path';
 import Jimp = require('jimp');
 
+const JPEG = require('jpeg-js');
+
 const directory = path.join(__dirname, '/tmp/');
 // filterImageFromURL
 // helper function to download, filter, and save the filtered image locally
@@ -14,9 +16,8 @@ export async function filterImageFromURL(inputURL: string) {
     const outpath = '/tmp/filtered' + Math.floor(Math.random() * 2000) + '.jpg';
 
     // add support for very large image files
-    const JPEG = require('jpeg-js')
     Jimp.decoders['image/jpeg'] = (data) => JPEG.decode(data, {
-        maxMemoryUsageInMB: 6144,
+        maxMemoryUsageInMB: 7000,
         maxResolutionInMP: 600
     })
 
